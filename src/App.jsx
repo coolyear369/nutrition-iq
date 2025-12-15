@@ -27,8 +27,7 @@ import {
   ShoppingBag,
   Save,
   Cloud,
-  Trophy,
-  Play
+  Trophy
 } from 'lucide-react';
 
 // --- Firebase Imports ---
@@ -443,39 +442,7 @@ const KNOWLEDGE_LIBRARY = [
     ],
     estimatedReadingMinutes: 3
   },
-  {
-    id: 'lv1-glossary-basics',
-    level: 1,
-    categoryKey: 'Awareness', 
-    title: '營養名詞小字典：一看就懂版',
-    subtitle: '蛋白質、碳水、脂肪、電解質到底是什麼？',
-    summary: '這一章是把最常聽到、卻常搞不懂的營養名詞整理成小字典。你可以當作「快速查表」，知道這個名詞是什麼、主要功用是什麼、平常從哪裡吃到。',
-    keyPoints: [
-      '三大宏量營養素（碳水、蛋白、脂肪）是身體運作的基石，缺一不可。',
-      '微量營養素（維生素、礦物質）雖然需求量少，卻是維持免疫力、代謝功能的關鍵。',
-      '運動補給品（如肌酸、BCAA）是錦上添花，基礎飲食沒顧好，吃補給品效果有限。'
-    ],
-    examples: [
-      '重訓完覺得肌肉痠痛，這時候身體最需要的是「蛋白質」來修補。',
-      '長跑或大量流汗後，只喝水不夠，需要補充「電解質」防止抽筋。',
-      '減脂期雖然要少吃油，但完全不吃「脂肪」會導致皮膚乾燥、甚至停經，重點是選好油（如魚油 Omega-3）。'
-    ],
-    commonMistakes: [
-      '以為「電解質」只是鹽巴，其實還包含鉀、鎂、鈣等礦物質。',
-      '以為「肌酸」是藥物會傷腎，其實它是研究最透徹的安全補給品（針對健康成人）。',
-      '以為「低 GI」等於低熱量，其實油炸食品 GI 值低但熱量超高。'
-    ],
-    tinyActions: [
-      '點擊右上角的「📖 名詞字典」按鈕，試著搜尋一個你常聽到的營養名詞。',
-      '今天吃飯時，看著盤子裡的食物，在心裡默念這是碳水、蛋白還是脂肪。'
-    ],
-    estimatedReadingMinutes: 2
-  },
-
-  // ==========================================
-  // Level 2: Quantification (新增章節)
-  // ==========================================
-  
+  // ... LV2 chapters ...
   {
     id: 'lv2-hand-method',
     level: 2,
@@ -838,41 +805,41 @@ const getRandomQuestions = (level, countChoice = 10, countBool = 10) => {
 // --- Components ---
 
 const ProgressBar = ({ current, total }) => (
-  <div className="w-full bg-white/20 rounded-full h-3 mb-8 overflow-hidden backdrop-blur-sm">
+  <div className="w-full bg-slate-100 rounded-full h-2 mb-6 overflow-hidden">
     <div 
-      className="bg-emerald-400 h-3 rounded-full transition-all duration-700 ease-out shadow-[0_0_10px_rgba(52,211,153,0.5)]" 
+      className="bg-emerald-500 h-2 rounded-full transition-all duration-500 ease-out" 
       style={{ width: `${(current / total) * 100}%` }}
     ></div>
   </div>
 );
 
 const LevelBadge = ({ level, animate }) => (
-  <div className={`flex items-center space-x-1.5 bg-[#F5F5F4] border border-[#E7E5E4] text-[#1C1917] px-3 py-1.5 rounded-full text-xs font-bold shadow-sm transition-transform ${animate ? 'scale-110 ring-2 ring-orange-400' : ''}`}>
-    <Award className={`w-3.5 h-3.5 text-orange-500 ${animate ? 'animate-bounce' : ''}`} />
-    <span className="font-serif">LV.{level}</span>
+  <div className={`flex items-center space-x-1.5 bg-white border border-slate-200 text-slate-800 px-3 py-1 rounded-full text-xs font-bold shadow-sm transition-transform ${animate ? 'scale-110 ring-2 ring-yellow-400' : ''}`}>
+    <Award className={`w-3.5 h-3.5 text-yellow-500 ${animate ? 'animate-bounce' : ''}`} />
+    <span>LV.{level}</span>
   </div>
 );
 
 const AnalysisCard = ({ title, score, suggestion, icon: Icon }) => (
-  <div className="bg-[#1C1917] p-5 rounded-[2rem] shadow-xl shadow-black/5 mb-3 border border-[#292524] text-stone-100">
-    <div className="flex items-center justify-between mb-4">
+  <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 mb-3">
+    <div className="flex items-center justify-between mb-3">
       <div className="flex items-center space-x-3">
-        <div className={`p-2.5 rounded-2xl ${score < 60 ? 'bg-red-900/50 text-red-400' : 'bg-emerald-900/50 text-emerald-400'}`}>
+        <div className={`p-2 rounded-xl ${score < 60 ? 'bg-red-50 text-red-500' : 'bg-emerald-50 text-emerald-500'}`}>
           <Icon size={20} />
         </div>
-        <h4 className="font-bold text-base font-serif tracking-wide">{title}</h4>
+        <h4 className="font-bold text-slate-800 text-base">{title}</h4>
       </div>
-      <span className={`text-xl font-black font-serif ${score < 60 ? 'text-red-400' : 'text-emerald-400'}`}>
+      <span className={`text-lg font-bold ${score < 60 ? 'text-red-500' : 'text-emerald-500'}`}>
         {score}%
       </span>
     </div>
-    <div className="w-full bg-stone-800 h-2 rounded-full mb-3 overflow-hidden">
+    <div className="w-full bg-slate-50 h-2 rounded-full mb-3 overflow-hidden">
       <div 
         className={`h-2 rounded-full ${score < 60 ? 'bg-red-500' : 'bg-emerald-500'}`} 
         style={{ width: `${score}%` }}
       ></div>
     </div>
-    <p className="text-xs text-stone-400 leading-relaxed font-light">
+    <p className="text-sm text-slate-500 leading-relaxed">
       {suggestion}
     </p>
   </div>
@@ -882,9 +849,9 @@ const AnalysisCard = ({ title, score, suggestion, icon: Icon }) => (
 
 export default function App() {
   const [view, setView] = useState('home'); 
-  const [currentLevel, setCurrentLevel] = useState(1); 
-  const [selectedLevel, setSelectedLevel] = useState(1); 
-  const [quizLevel, setQuizLevel] = useState(1); 
+  const [currentLevel, setCurrentLevel] = useState(1); // User's highest unlocked level
+  const [selectedLevel, setSelectedLevel] = useState(1); // User's chosen level to play
+  const [quizLevel, setQuizLevel] = useState(1); // Actual level being played (after checks)
   
   const [activeQuestions, setActiveQuestions] = useState([]); 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -895,19 +862,25 @@ export default function App() {
   const [selectedOption, setSelectedOption] = useState(null);
   const [isLevelUp, setIsLevelUp] = useState(false);
   
+  // Learning Mode State
   const [activeChapter, setActiveChapter] = useState(null);
+
+  // Glossary State
   const [searchTerm, setSearchTerm] = useState('');
   const [activeGlossaryItem, setActiveGlossaryItem] = useState(null);
 
+  // Persistence State
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [userStats, setUserStats] = useState({ totalPlayed: 0, highestScore: 0 });
 
+  // --- Auth & Persistence Effects ---
   useEffect(() => {
     if (!auth) {
       setIsLoading(false);
       return;
     }
+
     const initAuth = async () => {
       if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
         await signInWithCustomToken(auth, __initial_auth_token);
@@ -916,6 +889,7 @@ export default function App() {
       }
     };
     initAuth();
+
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       if (!currentUser) setIsLoading(false);
@@ -925,6 +899,7 @@ export default function App() {
 
   useEffect(() => {
     if (!user || !db) return;
+
     const userDocRef = doc(db, 'artifacts', appId, 'users', user.uid, 'profile', 'stats');
     const unsubscribe = onSnapshot(userDocRef, (docSnap) => {
       if (docSnap.exists()) {
@@ -941,17 +916,21 @@ export default function App() {
       console.error("Error fetching user data:", error);
       setIsLoading(false);
     });
+
     return () => unsubscribe();
   }, [user]);
 
   const saveProgress = async (newLevel, newScore) => {
     if (!user || !db) return;
     const userDocRef = doc(db, 'artifacts', appId, 'users', user.uid, 'profile', 'stats');
+    
+    // Optimistic update logic is handled by local state, this is just for DB sync
     const newStats = {
-      currentLevel: Math.max(newLevel, currentLevel), 
+      currentLevel: Math.max(newLevel, currentLevel), // Keep highest unlocked
       totalPlayed: userStats.totalPlayed + 1,
       highestScore: Math.max(newScore, userStats.highestScore)
     };
+
     try {
       await setDoc(userDocRef, newStats, { merge: true });
     } catch (e) {
@@ -959,24 +938,33 @@ export default function App() {
     }
   };
 
+  // Derived state
   const currentQuestion = activeQuestions[currentQuestionIndex];
   const isLastQuestion = activeQuestions.length > 0 && currentQuestionIndex === activeQuestions.length - 1;
   const PASS_THRESHOLD = 90;
   const MIN_QUESTIONS_PER_LEVEL = 10; 
 
   const handleStartQuiz = () => {
+    // 1. Ensure target level is not higher than unlocked level
     let targetLevel = Math.min(selectedLevel, currentLevel);
+    
+    // 2. Generate Quiz
     let newQuiz = getRandomQuestions(targetLevel);
+    
+    // 3. Fallback Logic: If current level has too few questions, fallback to Level 1
     if (newQuiz.length < MIN_QUESTIONS_PER_LEVEL && targetLevel > 1) {
       alert(`LV.${targetLevel} 題庫建置中，暫時用 LV.1 題目練習！`);
       targetLevel = 1;
       newQuiz = getRandomQuestions(1);
     } 
+    
+    // 4. Safety Check
     if (newQuiz.length === 0) {
        alert("題庫載入異常，請重新整理");
        return;
     }
-    setQuizLevel(targetLevel); 
+
+    setQuizLevel(targetLevel); // Set the actual level for this session
     setActiveQuestions(newQuiz);
     setView('quiz');
     setCurrentQuestionIndex(0);
@@ -1011,15 +999,24 @@ export default function App() {
     const totalQuestions = activeQuestions.length;
     const correctCount = answers.filter(a => a.correct).length;
     const finalScore = totalQuestions > 0 ? Math.round((correctCount / totalQuestions) * 100) : 0;
+    
     setScore(finalScore);
+
     let nextLevel = currentLevel;
+    let didLevelUp = false;
+
+    // Level Up Logic
     if (finalScore >= PASS_THRESHOLD && quizLevel === currentLevel) {
+      didLevelUp = true;
       nextLevel = currentLevel + 1;
       setIsLevelUp(true);
       setCurrentLevel(nextLevel);
-      setSelectedLevel(nextLevel); 
+      setSelectedLevel(nextLevel); // Auto-select next level
     }
+
+    // Save to Firebase
     saveProgress(nextLevel, finalScore);
+
     setView('analysis');
   };
 
@@ -1030,6 +1027,7 @@ export default function App() {
       stats[a.category].total++;
       if (a.correct) stats[a.category].correct++;
     });
+
     return Object.keys(CATEGORY_CONFIG).map(key => {
       const config = CATEGORY_CONFIG[key];
       const data = stats[key];
@@ -1045,6 +1043,7 @@ export default function App() {
     }).filter(c => c.hasData);
   };
 
+  // Memoize analysis results to avoid recalculation on render
   const weaknessAnalysis = useMemo(() => getWeaknessAnalysis(), [answers]);
   
   const getWeakestCategory = () => {
@@ -1060,11 +1059,13 @@ export default function App() {
     return '目前多半是靠感覺吃東西，很適合把 LV1 多刷幾次，把基本觀念變成直覺反應。';
   };
 
+  // --- Learning Mode Handlers ---
   const handleOpenChapter = (chapter) => {
     setActiveChapter(chapter);
     setView('learning_detail');
   };
 
+  // --- Glossary Handlers ---
   const handleOpenGlossaryItem = (item) => {
     setActiveGlossaryItem(item);
     setView('glossary_detail');
@@ -1084,40 +1085,42 @@ export default function App() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#F5F5F4] flex items-center justify-center">
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="flex flex-col items-center">
-          <RefreshCcw className="w-10 h-10 text-green-800 animate-spin mb-4 opacity-50" />
-          <p className="text-stone-500 font-bold font-serif tracking-widest text-sm">載入雲端紀錄中...</p>
+          <RefreshCcw className="w-8 h-8 text-emerald-500 animate-spin mb-4" />
+          <p className="text-slate-500 font-bold">載入雲端紀錄中...</p>
         </div>
       </div>
     );
   }
 
-  // --- Render Helpers ---
-  const isQuizMode = view === 'quiz';
-
   return (
-    <div className={`min-h-screen font-sans flex justify-center selection:bg-orange-200 selection:text-orange-900 ${isQuizMode ? 'bg-[#0F172A]' : 'bg-[#E7E5E4]'}`}>
-      <div className={`w-full max-w-md min-h-screen flex flex-col relative shadow-2xl transition-colors duration-500 ${isQuizMode ? 'bg-[#0F172A]' : 'bg-[#F5F5F4]'}`}>
+    <div className="min-h-screen bg-slate-50 font-sans text-slate-800 flex justify-center selection:bg-emerald-100 selection:text-emerald-800">
+      <div className="w-full max-w-md bg-white min-h-screen flex flex-col shadow-2xl relative border-x border-slate-50">
         
-        {/* Header */}
-        <header className={`px-6 py-5 flex justify-between items-center sticky top-0 z-30 backdrop-blur-md transition-all duration-300 ${isQuizMode ? 'bg-[#0F172A]/80 border-b border-white/5' : 'bg-[#F5F5F4]/80'}`}>
-          <div className="flex items-center space-x-3">
-            <div className={`p-2 rounded-xl shadow-sm ${isQuizMode ? 'bg-white/10' : 'bg-green-900'}`}>
-              <Brain size={20} className={isQuizMode ? 'text-emerald-400' : 'text-[#F5F5F4]'} />
+        {/* Header - Unified App Style */}
+        <header className="bg-white/90 backdrop-blur-md text-slate-800 px-5 py-4 flex justify-between items-center sticky top-0 z-30 border-b border-slate-100 h-16">
+          <div className="flex items-center space-x-2.5">
+            <div className="bg-emerald-500 p-1.5 rounded-lg shadow-sm shadow-emerald-200">
+              <Brain size={20} className="text-white" />
             </div>
-            {!isQuizMode && <h1 className="font-bold text-lg tracking-tight text-[#1C1917] font-serif">Nutrition IQ</h1>}
+            <h1 className="font-bold text-lg tracking-tight text-slate-900">Nutrition IQ</h1>
           </div>
-          <div className="flex items-center space-x-2">
-            {!isQuizMode && view !== 'quiz' && (
+          <div className="flex items-center space-x-3">
+            
+            {/* Glossary Button visible everywhere except during quiz */}
+            {view !== 'quiz' && (
               <button 
                 onClick={() => setView('glossary_hub')}
-                className="flex items-center px-3 py-1.5 bg-white border border-[#E7E5E4] rounded-full shadow-sm hover:shadow-md hover:scale-105 active:scale-95 transition-all group"
+                className="flex items-center px-3 py-1.5 bg-gradient-to-r from-emerald-600 to-teal-600 rounded-full shadow-lg shadow-emerald-200 hover:scale-105 active:scale-95 transition-all group"
+                title="名詞小字典"
               >
-                <Book size={14} className="text-stone-400 mr-2 group-hover:text-green-800 transition-colors" />
-                <span className="text-xs font-bold text-stone-600 group-hover:text-green-900">字典</span>
+                <Book size={14} className="text-white mr-1.5" />
+                <span className="text-xs font-bold text-white group-hover:text-emerald-50">名詞字典</span>
               </button>
             )}
+            
+            {/* Level Badge Logic */}
             {view === 'quiz' ? (
                <LevelBadge level={quizLevel} animate={false} />
             ) : (
@@ -1129,38 +1132,35 @@ export default function App() {
         </header>
 
         {/* Content Area */}
-        <main className="flex-1 overflow-y-auto overflow-x-hidden no-scrollbar">
+        <main className="flex-1 overflow-y-auto bg-slate-50/50">
           
           {/* VIEW: HOME */}
           {view === 'home' && (
             <div className="p-6 flex flex-col min-h-full">
               {/* Hero Section */}
-              <div className="mt-6 mb-10">
-                <h2 className="text-[2.75rem] font-black text-[#1C1917] mb-4 leading-[0.95] tracking-tighter font-serif">
-                  Eat Smart,<br/>
-                  <span className="text-green-800 italic">Live Better.</span>
+              <div className="mt-4 mb-8 text-center">
+                <h2 className="text-3xl font-extrabold text-slate-900 mb-3 tracking-tight leading-tight">
+                  飲食不是靠感覺<br/><span className="text-emerald-600">是靠「能力」</span>
                 </h2>
-                <p className="text-stone-500 text-sm leading-relaxed font-medium max-w-[80%]">
-                  飲食不是靠感覺，是靠「能力」。<br/>透過測驗與學習，打造你的易瘦大腦。
+                <p className="text-slate-500 text-base leading-relaxed">
+                  透過測驗提升等級，<br/>或主動學習強化弱點。
                 </p>
                 
-                {/* Stats */}
-                <div className="flex mt-8 space-x-4">
-                  <div className="flex-1 bg-white p-4 rounded-[2rem] shadow-sm border border-[#E7E5E4] flex flex-col items-center justify-center">
-                    <Trophy className="w-5 h-5 mb-2 text-orange-500" />
-                    <span className="text-xs font-bold text-stone-400 uppercase tracking-wider">最高分</span>
-                    <span className="text-xl font-black text-stone-800 font-serif">{userStats.highestScore}</span>
+                {/* User Stats Pills */}
+                <div className="flex justify-center mt-6 space-x-3">
+                  <div className="flex items-center bg-white px-3 py-1.5 rounded-full border border-slate-200 shadow-sm text-xs font-bold text-slate-600">
+                    <Trophy className="w-3.5 h-3.5 mr-1.5 text-yellow-500" />
+                    最高分: {userStats.highestScore}
                   </div>
-                  <div className="flex-1 bg-white p-4 rounded-[2rem] shadow-sm border border-[#E7E5E4] flex flex-col items-center justify-center">
-                    <Activity className="w-5 h-5 mb-2 text-green-700" />
-                    <span className="text-xs font-bold text-stone-400 uppercase tracking-wider">練習</span>
-                    <span className="text-xl font-black text-stone-800 font-serif">{userStats.totalPlayed}</span>
+                  <div className="flex items-center bg-white px-3 py-1.5 rounded-full border border-slate-200 shadow-sm text-xs font-bold text-slate-600">
+                    <Activity className="w-3.5 h-3.5 mr-1.5 text-emerald-500" />
+                    練習: {userStats.totalPlayed}
                   </div>
                 </div>
               </div>
 
-              {/* Level Tabs */}
-              <div className="mb-6 flex space-x-2 overflow-x-auto pb-2 no-scrollbar">
+              {/* Level Selector */}
+              <div className="mb-8 flex justify-center space-x-2">
                 {[1, 2, 3].map((lv) => {
                   const unlocked = lv <= currentLevel;
                   const isActive = lv === selectedLevel;
@@ -1169,12 +1169,12 @@ export default function App() {
                       key={lv}
                       onClick={() => unlocked && setSelectedLevel(lv)}
                       disabled={!unlocked}
-                      className={`px-5 py-2.5 rounded-full text-sm font-bold transition-all whitespace-nowrap ${
+                      className={`px-4 py-2 rounded-full text-sm font-bold transition-all border ${
                         unlocked 
                           ? isActive 
-                            ? 'bg-[#1C1917] text-[#F5F5F4] shadow-lg shadow-black/20 transform scale-105' 
-                            : 'bg-white text-stone-400 hover:text-stone-600 shadow-sm'
-                          : 'bg-[#E7E5E4] text-stone-300 cursor-not-allowed'
+                            ? 'bg-slate-800 text-white border-slate-800 shadow-md transform scale-105' 
+                            : 'bg-white text-slate-600 border-slate-200 hover:border-slate-400'
+                          : 'bg-slate-100 text-slate-300 border-slate-100 cursor-not-allowed'
                       }`}
                     >
                       {unlocked ? `LV.${lv}` : `LV.${lv} 🔒`}
@@ -1183,101 +1183,105 @@ export default function App() {
                 })}
               </div>
 
-              {/* Main Actions Grid */}
-              <div className="grid grid-cols-2 gap-4 pb-8">
-                {/* Quiz Button (Big) */}
+              <div className="space-y-4 pb-8">
+                {/* Quiz Button - Primary Action */}
                 <button 
                   onClick={handleStartQuiz}
-                  className="col-span-2 bg-green-900 text-[#F5F5F4] p-6 rounded-[2.5rem] shadow-xl shadow-green-900/20 hover:shadow-2xl hover:scale-[1.02] active:scale-95 transition-all group relative overflow-hidden"
+                  className="w-full bg-slate-900 text-white p-5 rounded-2xl shadow-xl hover:bg-slate-800 transition-all active:scale-95 flex items-center justify-between group relative overflow-hidden"
                 >
-                  <div className="absolute top-0 right-0 p-8 opacity-10">
-                    <Zap size={120} />
-                  </div>
-                  <div className="relative z-10 flex flex-col items-start h-full justify-between">
-                    <div className="bg-white/10 p-3 rounded-2xl mb-4 backdrop-blur-sm">
-                      <Play className="text-emerald-300 w-6 h-6 fill-current" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-slate-800 to-black opacity-50" />
+                  <div className="flex items-center text-left relative z-10">
+                    <div className="bg-white/10 p-3.5 rounded-xl mr-4 backdrop-blur-sm">
+                      <Zap className="text-yellow-400 w-6 h-6" />
                     </div>
                     <div>
-                      <div className="text-[10px] text-emerald-200/80 font-bold uppercase tracking-wider mb-1">
+                      <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">
                         Start Quiz • LV.{selectedLevel}
                       </div>
-                      <div className="text-2xl font-bold font-serif">開始能力測驗</div>
+                      <div className="text-lg font-bold">開始能力測驗</div>
                     </div>
                   </div>
+                  <ChevronRight className="text-slate-500 group-hover:text-white transition-colors relative z-10" />
                 </button>
 
-                {/* Learning Button */}
+                {/* Learning Button - Secondary Action */}
                 <button 
                   onClick={() => setView('learning_hub')}
-                  className="bg-white text-[#1C1917] p-5 rounded-[2rem] shadow-lg shadow-stone-200/50 hover:shadow-xl hover:-translate-y-1 transition-all active:scale-95 flex flex-col justify-between h-40 group"
+                  className="w-full bg-white text-slate-800 border border-slate-100 p-5 rounded-2xl shadow-sm hover:border-emerald-500 hover:shadow-emerald-100 transition-all active:scale-95 flex items-center justify-between group"
                 >
-                  <div className="bg-[#F5F5F4] p-3 rounded-2xl w-fit group-hover:bg-green-50 transition-colors">
-                    <GraduationCap className="text-stone-600 w-6 h-6 group-hover:text-green-700 transition-colors" />
+                  <div className="flex items-center text-left">
+                    <div className="bg-emerald-50 p-3.5 rounded-xl mr-4">
+                      <GraduationCap className="text-emerald-600 w-6 h-6" />
+                    </div>
+                    <div>
+                      <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">Library</div>
+                      <div className="text-lg font-bold">知識圖書館</div>
+                    </div>
                   </div>
-                  <div>
-                    <div className="text-lg font-bold font-serif leading-tight">知識<br/>圖書館</div>
-                  </div>
+                  <ChevronRight className="text-slate-300 group-hover:text-emerald-500 transition-colors" />
                 </button>
 
-                {/* Glossary Button */}
+                {/* Glossary Shortcut Card - Tertiary Action */}
                 <button 
                   onClick={() => setView('glossary_hub')}
-                  className="bg-[#D66D29] text-white p-5 rounded-[2rem] shadow-lg shadow-orange-500/20 hover:shadow-xl hover:-translate-y-1 transition-all active:scale-95 flex flex-col justify-between h-40 group relative overflow-hidden"
+                  className="w-full bg-gradient-to-r from-emerald-50/50 to-teal-50/50 text-slate-800 border border-emerald-100 p-4 rounded-2xl shadow-sm hover:shadow-md transition-all active:scale-95 flex items-center justify-between group"
                 >
-                  <div className="absolute -bottom-4 -right-4 text-white/10 rotate-12">
-                    <Book size={80} />
+                  <div className="flex items-center text-left">
+                    <div className="bg-white p-2.5 rounded-xl mr-4 shadow-sm border border-emerald-50">
+                      <Book className="text-emerald-600 w-5 h-5" />
+                    </div>
+                    <div>
+                      <div className="text-[10px] text-emerald-600 font-bold uppercase tracking-wider mb-0.5">Quick Lookup</div>
+                      <div className="font-bold text-base">名詞小字典</div>
+                    </div>
                   </div>
-                  <div className="bg-white/20 p-3 rounded-2xl w-fit backdrop-blur-sm">
-                    <Search className="text-white w-6 h-6" />
-                  </div>
-                  <div className="relative z-10">
-                    <div className="text-lg font-bold font-serif leading-tight">名詞<br/>小字典</div>
-                  </div>
+                  <Search size={18} className="text-emerald-400 group-hover:text-emerald-600 transition-colors" />
                 </button>
               </div>
             </div>
           )}
 
-          {/* VIEW: LEARNING HUB */}
+          {/* VIEW: LEARNING HUB (Chapter List) */}
           {view === 'learning_hub' && (
             <div className="p-6">
-              <div className="flex items-center mb-8">
+              <div className="flex items-center mb-6">
                 <button 
                   onClick={() => setView('home')} 
-                  className="mr-4 p-3 bg-white shadow-sm rounded-full hover:bg-stone-100 text-stone-600 transition-all"
+                  className="mr-4 p-2 bg-white border border-slate-200 shadow-sm rounded-full hover:bg-slate-50 text-slate-600 transition-all"
                 >
                   <ChevronLeft size={20} />
                 </button>
-                <h2 className="text-2xl font-black text-[#1C1917] font-serif">知識圖書館</h2>
+                <h2 className="text-2xl font-bold text-slate-900">知識圖書館</h2>
               </div>
 
-              <div className="space-y-5 pb-10">
-                {KNOWLEDGE_LIBRARY.map((chapter, idx) => {
+              <div className="space-y-4 pb-10">
+                {KNOWLEDGE_LIBRARY.map((chapter) => {
                   const config = CATEGORY_CONFIG[chapter.categoryKey] || { name: chapter.categoryKey, icon: Book, desc: '' };
                   const Icon = config.icon;
+                  
                   return (
                     <button 
                       key={chapter.id}
                       onClick={() => handleOpenChapter(chapter)}
-                      className="w-full bg-white p-6 rounded-[2rem] shadow-lg shadow-stone-200/50 hover:shadow-xl transition-all text-left group relative overflow-hidden"
+                      className="w-full bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-lg hover:shadow-emerald-100 hover:border-emerald-200 transition-all text-left group relative overflow-hidden"
                     >
-                      <div className="absolute top-0 right-0 w-24 h-24 bg-[#F5F5F4] rounded-bl-[2rem] -mr-4 -mt-4 transition-transform group-hover:scale-110"></div>
-                      <Icon className="absolute top-4 right-4 w-10 h-10 text-stone-300 group-hover:text-green-700 transition-colors z-10" />
-                      
-                      <div className="relative z-10">
-                        <div className="flex items-center space-x-2 mb-3">
-                           <span className="bg-[#1C1917] text-white text-[10px] font-bold px-2 py-1 rounded-md">LV.{chapter.level}</span>
-                           <span className="text-[10px] font-bold text-stone-400 uppercase tracking-wider">{config.name}</span>
-                        </div>
-                        <h3 className="font-bold text-xl text-[#1C1917] leading-tight mb-2 font-serif pr-12">{chapter.title}</h3>
-                        <p className="text-sm font-medium text-stone-500 mb-4 line-clamp-2">
-                          {chapter.subtitle}
-                        </p>
-                        <div className="flex items-center text-xs text-green-700 font-bold bg-green-50 w-fit px-3 py-1.5 rounded-full">
-                          <Clock size={12} className="mr-1.5" />
-                          {chapter.estimatedReadingMinutes} min read
+                      <div className="flex items-start justify-between mb-3 relative z-10">
+                        <div className="flex items-center space-x-2">
+                           <span className="bg-slate-900 text-white text-[10px] font-bold px-2 py-1 rounded">LV.{chapter.level}</span>
+                           <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded">{config.name}</span>
                         </div>
                       </div>
+                      <h3 className="font-bold text-lg text-slate-800 leading-tight mb-2 relative z-10">{chapter.title}</h3>
+                      <p className="text-sm font-medium text-slate-500 mb-4 relative z-10">
+                        {chapter.subtitle}
+                      </p>
+                      
+                      <div className="flex items-center text-xs text-slate-400 font-bold relative z-10">
+                        <Clock size={14} className="mr-1.5" />
+                        閱讀時間：{chapter.estimatedReadingMinutes} 分鐘
+                      </div>
+
+                      <Icon className="absolute -bottom-3 -right-3 w-20 h-20 text-slate-50 opacity-50 group-hover:text-emerald-50 group-hover:opacity-100 transition-all z-0 transform group-hover:scale-110" />
                     </button>
                   );
                 })}
@@ -1287,69 +1291,89 @@ export default function App() {
 
           {/* VIEW: LEARNING DETAIL */}
           {view === 'learning_detail' && activeChapter && (
-            <div className="min-h-full bg-white">
-              <div className="sticky top-0 bg-white/95 backdrop-blur-md z-20 border-b border-[#F5F5F4] px-6 py-4 flex items-center justify-between">
+            <div className="min-h-full bg-slate-50">
+              <div className="sticky top-0 bg-white/90 backdrop-blur-md z-10 border-b border-slate-100 px-6 py-4 flex items-center">
                 <button 
                   onClick={() => setView('learning_hub')} 
-                  className="p-2 -ml-2 hover:bg-stone-50 rounded-full text-stone-500 transition-all"
+                  className="mr-4 p-2 bg-slate-50 border border-slate-200 rounded-full hover:bg-slate-100 text-slate-600 transition-all"
                 >
-                  <ChevronLeft size={24} />
+                  <ChevronLeft size={20} />
                 </button>
-                <div className="text-xs font-bold text-stone-400 uppercase tracking-widest">Article</div>
-                <div className="w-8"></div>
+                <div className="flex-1 min-w-0">
+                   <div className="text-[10px] text-emerald-600 font-bold uppercase tracking-wider mb-0.5">LV.{activeChapter.level} • {CATEGORY_CONFIG[activeChapter.categoryKey]?.name}</div>
+                   <h2 className="text-base font-bold text-slate-800 truncate leading-tight">
+                     {activeChapter.title}
+                   </h2>
+                </div>
               </div>
 
-              <div className="p-6 pb-24 max-w-xl mx-auto">
-                <div className="mb-8">
-                  <span className="text-green-700 font-bold text-xs tracking-wider mb-2 block uppercase">{CATEGORY_CONFIG[activeChapter.categoryKey]?.name}</span>
-                  <h1 className="text-3xl font-black text-[#1C1917] font-serif leading-tight mb-4">{activeChapter.title}</h1>
-                  <p className="text-lg text-stone-500 leading-relaxed font-medium">{activeChapter.summary}</p>
+              <div className="p-6 space-y-6 pb-20">
+                <div className="bg-gradient-to-br from-emerald-50 to-white p-6 rounded-2xl border border-emerald-100/50 shadow-sm">
+                  <h3 className="font-bold text-emerald-900 mb-3 text-lg leading-snug">{activeChapter.subtitle}</h3>
+                  <p className="text-slate-700 leading-relaxed text-sm">
+                    {activeChapter.summary}
+                  </p>
                 </div>
 
-                <div className="space-y-10">
-                  <section>
-                    <h3 className="flex items-center text-lg font-bold text-[#1C1917] mb-4 border-l-4 border-green-600 pl-3">
-                      重點觀念
-                    </h3>
-                    <div className="space-y-4">
-                      {activeChapter.keyPoints.map((point, idx) => (
-                        <div key={idx} className="bg-[#F5F5F4] p-5 rounded-2xl text-stone-700 text-sm leading-relaxed font-medium">
-                          {point}
-                        </div>
-                      ))}
-                    </div>
-                  </section>
+                <div>
+                  <h4 className="flex items-center font-bold text-slate-800 mb-4 text-base">
+                    <CheckCircle2 className="w-5 h-5 text-emerald-500 mr-2.5" />
+                    重點觀念
+                  </h4>
+                  <ul className="space-y-3">
+                    {activeChapter.keyPoints.map((point, idx) => (
+                      <li key={idx} className="flex items-start bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
+                        <div className="min-w-[6px] h-[6px] rounded-full bg-emerald-400 mt-2 mr-3.5"></div>
+                        <span className="text-sm text-slate-600 leading-relaxed">{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
 
-                  <section>
-                    <h3 className="flex items-center text-lg font-bold text-[#1C1917] mb-4 border-l-4 border-orange-500 pl-3">
-                      常見誤區
-                    </h3>
-                    <div className="space-y-3">
-                      {activeChapter.commonMistakes.map((mistake, idx) => (
-                        <div key={idx} className="flex gap-4 items-start">
-                          <div className="mt-1 bg-red-100 p-1 rounded-full text-red-500 flex-shrink-0">
-                            <XCircle size={16} />
-                          </div>
-                          <p className="text-stone-600 text-sm leading-relaxed border-b border-[#F5F5F4] pb-3 w-full">{mistake}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </section>
+                <div>
+                  <h4 className="flex items-center font-bold text-slate-800 mb-4 text-base">
+                    <AlertTriangle className="w-5 h-5 text-orange-500 mr-2.5" />
+                    常見誤區
+                  </h4>
+                  <ul className="space-y-3">
+                    {activeChapter.commonMistakes.map((mistake, idx) => (
+                      <li key={idx} className="flex items-start bg-orange-50/50 p-4 rounded-xl border border-orange-100">
+                        <XCircle className="w-4 h-4 text-orange-400 mt-0.5 mr-3 flex-shrink-0" />
+                        <span className="text-sm text-slate-700 leading-relaxed">{mistake}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
 
-                  <section className="bg-stone-900 rounded-[2rem] p-8 text-stone-200 shadow-2xl shadow-stone-900/20">
-                    <h3 className="flex items-center text-lg font-bold text-white mb-6">
-                      <Star className="w-5 h-5 mr-2 text-yellow-400 fill-current" />
-                      今日小任務
-                    </h3>
-                    <ul className="space-y-6">
-                      {activeChapter.tinyActions.map((action, idx) => (
-                        <li key={idx} className="flex gap-4">
-                           <span className="flex-shrink-0 w-6 h-6 rounded-full border border-stone-600 flex items-center justify-center text-xs font-mono text-stone-400">{idx + 1}</span>
-                           <p className="text-sm leading-relaxed">{action}</p>
-                        </li>
-                      ))}
-                    </ul>
-                  </section>
+                 <div>
+                  <h4 className="flex items-center font-bold text-slate-800 mb-4 text-base">
+                    <Lightbulb className="w-5 h-5 text-yellow-500 mr-2.5" />
+                    生活實例
+                  </h4>
+                  <ul className="space-y-3">
+                    {activeChapter.examples.map((ex, idx) => (
+                      <li key={idx} className="bg-slate-50 p-4 rounded-xl border border-slate-200 text-sm text-slate-600 leading-relaxed italic">
+                        "{ex}"
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="bg-slate-900 rounded-2xl p-6 text-white shadow-xl shadow-slate-200">
+                  <h4 className="flex items-center font-bold text-yellow-400 mb-4 text-base">
+                    <Star className="w-5 h-5 mr-2.5" />
+                    今日小任務
+                  </h4>
+                  <ul className="space-y-4">
+                    {activeChapter.tinyActions.map((action, idx) => (
+                      <li key={idx} className="flex items-start">
+                         <div className="bg-white/10 p-1.5 rounded-lg mr-3.5 mt-0.5">
+                           <Target className="w-3 h-3 text-emerald-400" />
+                         </div>
+                         <span className="text-sm text-slate-300 leading-relaxed">{action}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
             </div>
@@ -1357,58 +1381,59 @@ export default function App() {
 
           {/* VIEW: GLOSSARY HUB */}
           {view === 'glossary_hub' && (
-            <div className="p-6 h-full flex flex-col">
-              <div className="flex items-center justify-between mb-6">
+            <div className="p-6">
+              <div className="flex items-center mb-6">
                 <button 
                   onClick={() => setView('home')} 
-                  className="p-3 bg-white shadow-sm rounded-full hover:bg-stone-100 text-stone-600 transition-all"
+                  className="mr-4 p-2 bg-white border border-slate-200 shadow-sm rounded-full hover:bg-slate-50 text-slate-600 transition-all"
                 >
                   <ChevronLeft size={20} />
                 </button>
-                <span className="text-xs font-bold text-stone-400 uppercase tracking-widest">DICTIONARY</span>
-                <div className="w-10"></div>
+                <h2 className="text-2xl font-bold text-slate-900">名詞小字典</h2>
               </div>
 
-              <h2 className="text-3xl font-black text-[#1C1917] font-serif mb-6">營養名詞<br/>小字典</h2>
-
-              <div className="relative mb-8 group z-20">
-                <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none">
-                  <Search className="w-5 h-5 text-stone-400 group-focus-within:text-orange-500 transition-colors" />
+              {/* Search Bar */}
+              <div className="relative mb-8 group">
+                <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+                  <Search className="w-5 h-5 text-slate-400 group-focus-within:text-emerald-500 transition-colors" />
                 </div>
                 <input 
                   type="text" 
-                  placeholder="搜尋..." 
+                  placeholder="搜尋名詞 (如：蛋白質、Protein...)" 
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full py-5 pl-14 pr-6 rounded-[2rem] bg-white shadow-xl shadow-stone-200/50 border-none text-stone-800 placeholder:text-stone-300 focus:ring-4 focus:ring-orange-100 transition-all text-lg font-medium"
+                  className="w-full py-4 pl-12 pr-4 rounded-2xl border border-slate-200 bg-white shadow-sm focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 focus:outline-none transition-all text-slate-800 placeholder:text-slate-400"
                 />
               </div>
 
-              <div className="flex-1 overflow-y-auto space-y-10 pb-12 -mx-6 px-6 no-scrollbar">
+              {/* Grouped List */}
+              <div className="space-y-8 pb-12">
                 {Object.keys(glossaryByCategory).length > 0 ? (
                   Object.keys(glossaryByCategory).map((category) => (
-                    <div key={category} className="animate-in fade-in slide-in-from-bottom-4 duration-700">
-                      <div className="sticky top-0 bg-[#F5F5F4]/95 backdrop-blur-sm py-2 mb-2 z-10 flex items-center">
-                        <span className="w-2 h-2 rounded-full bg-orange-500 mr-2"></span>
-                        <h3 className="font-bold text-stone-800 text-sm uppercase tracking-widest">
-                          {category}
-                        </h3>
-                      </div>
+                    <div key={category} className="animate-in fade-in slide-in-from-bottom-2 duration-500">
+                      <h3 className="font-bold text-emerald-800 mb-4 px-1 flex items-center text-sm uppercase tracking-wider">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-2.5"></span>
+                        {category}
+                      </h3>
                       <div className="grid gap-3">
                         {glossaryByCategory[category].map((item, idx) => (
                           <button 
                             key={idx}
                             onClick={() => handleOpenGlossaryItem(item)}
-                            className="bg-white p-5 rounded-[1.5rem] shadow-sm text-left hover:shadow-lg transition-all group w-full"
+                            className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm text-left hover:border-emerald-200 hover:shadow-md transition-all group flex flex-col"
                           >
-                            <div className="flex justify-between items-center mb-1">
-                              <span className="font-bold text-[#1C1917] text-lg group-hover:text-orange-600 transition-colors font-serif">
-                                {item.term}
-                              </span>
-                              <ChevronRight size={16} className="text-stone-300 group-hover:translate-x-1 transition-transform" />
+                            <div className="flex justify-between items-start mb-1.5">
+                              <div className="flex flex-col">
+                                <span className="font-bold text-slate-800 text-lg group-hover:text-emerald-700 transition-colors">
+                                  {item.term}
+                                </span>
+                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wide">
+                                  {item.english}
+                                </span>
+                              </div>
+                              <ChevronRight size={18} className="text-slate-300 group-hover:text-emerald-500 mt-1 transition-transform group-hover:translate-x-1" />
                             </div>
-                            <p className="text-xs font-bold text-stone-400 uppercase tracking-wide mb-2">{item.english}</p>
-                            <p className="text-sm text-stone-600 line-clamp-2 leading-relaxed">
+                            <p className="text-sm text-slate-500 line-clamp-1 border-t border-slate-50 pt-2 mt-1">
                               {item.oneLine}
                             </p>
                           </button>
@@ -1417,9 +1442,9 @@ export default function App() {
                     </div>
                   ))
                 ) : (
-                  <div className="text-center py-20 opacity-30">
-                    <Book size={64} className="mx-auto mb-4" />
-                    <p>沒有找到相關結果</p>
+                  <div className="text-center py-16 text-slate-400">
+                    <Search size={48} className="mx-auto mb-4 opacity-20" />
+                    <p className="font-medium">找不到相關名詞</p>
                   </div>
                 )}
               </div>
@@ -1428,153 +1453,146 @@ export default function App() {
 
           {/* VIEW: GLOSSARY DETAIL */}
           {view === 'glossary_detail' && activeGlossaryItem && (
-            <div className="min-h-full bg-[#1C1917] text-[#F5F5F4]">
-              <div className="sticky top-0 bg-[#1C1917]/80 backdrop-blur-md z-20 px-6 py-4 flex items-center">
+            <div className="min-h-full bg-slate-50">
+              <div className="sticky top-0 bg-white/90 backdrop-blur-md z-10 border-b border-slate-100 px-6 py-4 flex items-center">
                 <button 
                   onClick={() => setView('glossary_hub')} 
-                  className="mr-4 p-2 bg-white/10 rounded-full hover:bg-white/20 transition-all"
+                  className="mr-4 p-2 bg-slate-50 border border-slate-200 rounded-full hover:bg-slate-100 text-slate-600 transition-all"
                 >
-                  <ChevronLeft size={20} className="text-white" />
+                  <ChevronLeft size={20} />
                 </button>
-                <div className="text-xs font-bold text-stone-500 uppercase tracking-widest">Detail</div>
+                <div className="flex-1 min-w-0">
+                   <div className="text-[10px] text-emerald-600 font-bold uppercase tracking-wider mb-0.5">GLOSSARY</div>
+                   <h2 className="text-base font-bold text-slate-800 truncate">
+                     {activeGlossaryItem.term}
+                   </h2>
+                </div>
               </div>
 
-              <div className="p-8 pb-20">
-                <div className="mb-10 text-center">
-                  <span className="inline-block border border-stone-700 text-stone-400 text-[10px] font-bold px-3 py-1 rounded-full mb-6 uppercase tracking-wider">
+              <div className="p-6 space-y-6">
+                {/* Header Card */}
+                <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm text-center">
+                  <span className="inline-block bg-emerald-50 text-emerald-700 text-[10px] font-bold px-3 py-1 rounded-full mb-4 uppercase tracking-wider border border-emerald-100">
                     {activeGlossaryItem.category}
                   </span>
-                  <h2 className="text-4xl font-black text-white mb-2 font-serif tracking-tight">{activeGlossaryItem.term}</h2>
-                  <p className="text-orange-500 font-bold text-sm uppercase tracking-widest">{activeGlossaryItem.english}</p>
+                  <h2 className="text-3xl font-extrabold text-slate-900 mb-1 tracking-tight">{activeGlossaryItem.term}</h2>
+                  <p className="text-slate-400 font-bold text-sm mb-6 uppercase tracking-wide">{activeGlossaryItem.english}</p>
+                  <div className="bg-slate-50 p-5 rounded-2xl text-slate-700 font-medium leading-relaxed text-sm">
+                    {activeGlossaryItem.oneLine}
+                  </div>
                 </div>
 
-                <div className="bg-stone-800/50 p-6 rounded-[2rem] mb-8 border border-stone-700/50">
-                  <p className="text-lg leading-relaxed font-medium text-stone-200 text-center">
-                    "{activeGlossaryItem.oneLine}"
+                {/* Why It Matters */}
+                <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                  <h4 className="flex items-center font-bold text-slate-800 mb-3 text-sm uppercase tracking-wide">
+                    <Info size={18} className="text-blue-500 mr-2.5" />
+                    為什麼重要？
+                  </h4>
+                  <p className="text-slate-600 text-sm leading-relaxed">
+                    {activeGlossaryItem.whyItMatters}
                   </p>
                 </div>
 
-                <div className="space-y-8">
-                  <div>
-                    <h4 className="flex items-center text-stone-500 font-bold text-xs uppercase tracking-widest mb-4">
-                      <Info size={14} className="mr-2" />
-                      為什麼重要
+                {/* Sources */}
+                {activeGlossaryItem.typicalSources && (
+                  <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                    <h4 className="flex items-center font-bold text-slate-800 mb-3 text-sm uppercase tracking-wide">
+                      <ShoppingBag size={18} className="text-orange-500 mr-2.5" />
+                      常見來源
                     </h4>
-                    <p className="text-stone-300 leading-relaxed border-l-2 border-green-700 pl-4">
-                      {activeGlossaryItem.whyItMatters}
+                    <p className="text-slate-600 text-sm leading-relaxed">
+                      {activeGlossaryItem.typicalSources}
                     </p>
                   </div>
+                )}
 
-                  {activeGlossaryItem.typicalSources && (
-                    <div>
-                      <h4 className="flex items-center text-stone-500 font-bold text-xs uppercase tracking-widest mb-4">
-                        <ShoppingBag size={14} className="mr-2" />
-                        常見來源
-                      </h4>
-                      <div className="flex flex-wrap gap-2">
-                        {activeGlossaryItem.typicalSources.split('、').map((source, i) => (
-                          <span key={i} className="bg-stone-800 px-3 py-1.5 rounded-lg text-sm text-stone-300">
-                            {source}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {activeGlossaryItem.onLabel && (
-                    <div>
-                      <h4 className="flex items-center text-stone-500 font-bold text-xs uppercase tracking-widest mb-4">
-                        <Tag size={14} className="mr-2" />
-                        包裝標示
-                      </h4>
-                      <div className="bg-white/5 p-4 rounded-xl font-mono text-sm text-green-400">
+                {/* On Label */}
+                {activeGlossaryItem.onLabel && (
+                  <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                    <h4 className="flex items-center font-bold text-slate-800 mb-3 text-sm uppercase tracking-wide">
+                      <Tag size={18} className="text-purple-500 mr-2.5" />
+                      包裝常見標示
+                    </h4>
+                    <div className="bg-slate-50 px-3 py-2 rounded-lg inline-block border border-slate-100">
+                      <p className="text-slate-600 text-sm font-mono font-medium">
                         {activeGlossaryItem.onLabel}
-                      </div>
+                      </p>
                     </div>
-                  )}
-                </div>
+                  </div>
+                )}
               </div>
             </div>
           )}
 
-          {/* VIEW: QUIZ (Immersive Dark Mode) */}
+          {/* VIEW: QUIZ */}
           {view === 'quiz' && currentQuestion && (
-            <div className="p-6 flex flex-col h-full bg-[#0F172A] text-white">
-              {/* Progress */}
-              <div className="mb-8 pt-2">
-                <div className="flex justify-between items-end mb-3">
-                  <span className="text-4xl font-black text-white/20 font-serif">
-                    {String(currentQuestionIndex + 1).padStart(2, '0')}
+            <div className="p-6 flex flex-col h-full bg-slate-50">
+              <div className="mb-6">
+                <div className="flex justify-between items-center mb-3">
+                  <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wide shadow-sm ${currentQuestion.type === 'boolean' ? 'bg-blue-50 text-blue-600 border border-blue-100' : 'bg-emerald-50 text-emerald-600 border border-emerald-100'}`}>
+                    {currentQuestion.type === 'boolean' ? '是非題' : '選擇題'}
                   </span>
-                  <span className="text-xs font-bold text-white/40 uppercase tracking-widest mb-1">
-                    of {activeQuestions.length} Questions
-                  </span>
-                </div>
-                <div className="w-full bg-white/10 rounded-full h-1.5 overflow-hidden">
-                  <div 
-                    className="bg-emerald-400 h-1.5 rounded-full transition-all duration-500 ease-out shadow-[0_0_10px_rgba(52,211,153,0.8)]" 
-                    style={{ width: `${((currentQuestionIndex + 1) / activeQuestions.length) * 100}%` }}
-                  ></div>
-                </div>
-              </div>
-
-              {/* Question Card */}
-              <div className="flex-1 flex flex-col justify-center mb-8 relative z-10">
-                <div className="inline-flex self-start items-center bg-white/10 px-3 py-1 rounded-full mb-6 backdrop-blur-md">
-                  <span className={`w-2 h-2 rounded-full mr-2 ${currentQuestion.type === 'boolean' ? 'bg-blue-400' : 'bg-emerald-400'}`}></span>
-                  <span className="text-[10px] font-bold text-white tracking-widest uppercase">
-                    {currentQuestion.type === 'boolean' ? 'True / False' : 'Multiple Choice'}
+                  <span className="text-xs font-bold text-slate-400">
+                    Q{currentQuestionIndex + 1} <span className="text-slate-300">/</span> {activeQuestions.length}
                   </span>
                 </div>
-                <h3 className="text-2xl md:text-3xl font-bold leading-snug font-serif tracking-wide text-white">
+                <ProgressBar current={currentQuestionIndex + 1} total={activeQuestions.length} />
+                <h3 className="text-2xl font-bold text-slate-900 mt-4 leading-snug">
                   {currentQuestion.question}
                 </h3>
               </div>
-
-              {/* Options */}
-              <div className="space-y-3 relative z-20 pb-6">
+              <div className="space-y-3 flex-1 overflow-y-auto pb-6">
                 <div className={currentQuestion.type === 'boolean' ? "grid grid-cols-2 gap-4" : "space-y-3"}>
                   {currentQuestion.options.map((option, idx) => {
-                    let btnClass = "relative overflow-hidden p-5 rounded-2xl border-2 text-left transition-all duration-200 font-medium flex items-center group ";
+                    let btnClass = "p-5 rounded-2xl border-2 text-left transition-all duration-200 font-medium relative flex items-center ";
                     if (currentQuestion.type === 'boolean') {
-                        btnClass += "h-32 justify-center text-center text-xl flex-col ";
+                        btnClass += "h-40 justify-center text-center text-xl flex-col shadow-sm ";
                     } else {
-                        btnClass += "w-full justify-between ";
+                        btnClass += "w-full justify-between shadow-sm ";
                     }
 
                     if (showExplanation) {
-                      if (idx === currentQuestion.correct) btnClass += "bg-emerald-500/20 border-emerald-500 text-emerald-300 shadow-[0_0_30px_rgba(16,185,129,0.3)]";
-                      else if (idx === selectedOption) btnClass += "bg-red-500/20 border-red-500 text-red-300";
-                      else btnClass += "border-white/5 text-white/30";
+                      if (idx === currentQuestion.correct) btnClass += "border-emerald-500 bg-emerald-50 text-emerald-800 shadow-none";
+                      else if (idx === selectedOption) btnClass += "border-red-400 bg-red-50 text-red-800 shadow-none";
+                      else btnClass += "border-slate-100 text-slate-300 opacity-50 shadow-none";
                     } else {
-                      btnClass += "border-white/10 bg-white/5 text-stone-200 hover:bg-white/10 hover:border-white/30 hover:scale-[1.02] active:scale-95";
+                      btnClass += "border-white bg-white text-slate-700 hover:border-emerald-200 hover:shadow-md";
                     }
 
                     return (
                       <button key={idx} onClick={() => handleAnswer(idx)} disabled={showExplanation} className={btnClass}>
-                        <span className="relative z-10">{option}</span>
-                        {showExplanation && idx === currentQuestion.correct && <CheckCircle2 className="text-emerald-400 ml-3 relative z-10" />}
-                        {showExplanation && idx === selectedOption && idx !== currentQuestion.correct && <XCircle className="text-red-400 ml-3 relative z-10" />}
+                        <span className={currentQuestion.type === 'boolean' ? "font-bold" : "text-sm md:text-base"}>{option}</span>
+                        {showExplanation && currentQuestion.type !== 'boolean' && idx === currentQuestion.correct && <CheckCircle2 size={20} className="text-emerald-500 flex-shrink-0 ml-3" />}
+                        {showExplanation && currentQuestion.type !== 'boolean' && idx === selectedOption && idx !== currentQuestion.correct && <XCircle size={20} className="text-red-500 flex-shrink-0 ml-3" />}
                       </button>
                     );
                   })}
                 </div>
               </div>
               
-              {/* Feedback Overlay - Bottom Sheet Style */}
+              {/* Feedback Overlay Card */}
               {showExplanation && (
-                <div className="fixed inset-x-0 bottom-0 p-6 bg-white rounded-t-[2.5rem] z-50 animate-in slide-in-from-bottom duration-500 shadow-[0_-10px_40px_rgba(0,0,0,0.5)] max-w-md mx-auto">
-                  <div className="w-12 h-1.5 bg-stone-200 rounded-full mx-auto mb-6"></div>
-                  <div className={`flex items-center mb-4 ${isCorrect ? 'text-emerald-600' : 'text-red-500'}`}>
-                    {isCorrect ? <CheckCircle2 size={24} className="mr-3" /> : <AlertTriangle size={24} className="mr-3" />}
-                    <span className="font-bold text-lg font-serif">{isCorrect ? 'Correct!' : 'Incorrect'}</span>
+                <div className="fixed bottom-0 left-0 right-0 p-4 bg-white/90 backdrop-blur shadow-[0_-4px_20px_-5px_rgba(0,0,0,0.1)] rounded-t-3xl border-t border-slate-100 z-50 animate-in slide-in-from-bottom duration-300 max-w-md mx-auto">
+                  <div className={`p-5 rounded-2xl mb-4 border ${isCorrect ? 'bg-emerald-50 border-emerald-100' : 'bg-orange-50 border-orange-100'}`}>
+                    <div className="flex items-center justify-between mb-3 pb-3 border-b border-black/5">
+                       <span className={`text-xs font-bold uppercase tracking-wider flex items-center ${isCorrect ? 'text-emerald-700' : 'text-orange-700'}`}>
+                          {isCorrect ? <CheckCircle2 className="w-4 h-4 mr-2"/> : <AlertTriangle className="w-4 h-4 mr-2"/>}
+                          {isCorrect ? 'Correct Answer' : 'Incorrect'}
+                        </span>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <Brain size={20} className={`mt-0.5 flex-shrink-0 ${isCorrect ? "text-emerald-600" : "text-orange-600"}`} />
+                      <div>
+                        <span className={`font-bold text-sm block mb-1 ${isCorrect ? "text-emerald-800" : "text-orange-800"}`}>
+                          AI 解析
+                        </span>
+                        <p className="text-slate-700 text-sm leading-relaxed">{currentQuestion.explanation}</p>
+                      </div>
+                    </div>
                   </div>
-                  <p className="text-stone-600 leading-relaxed mb-8 font-medium">
-                    {currentQuestion.explanation}
-                  </p>
                   <button 
                     onClick={handleNext} 
-                    className="w-full bg-[#1C1917] text-white py-4 rounded-2xl font-bold text-lg hover:bg-black transition-all active:scale-95 shadow-xl"
+                    className="w-full bg-slate-900 text-white py-4 rounded-xl font-bold hover:bg-slate-800 transition-transform active:scale-95 shadow-lg"
                   >
                     {isLastQuestion ? '查看成績' : '下一題'}
                   </button>
@@ -1585,65 +1603,84 @@ export default function App() {
 
           {/* VIEW: ANALYSIS */}
           {view === 'analysis' && (
-            <div className="p-6 bg-[#1C1917] min-h-full text-white">
+            <div className="p-6 bg-slate-50 min-h-full">
               
-              <div className="mt-8 mb-12 text-center relative">
-                {isLevelUp && (
-                  <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-12 bg-yellow-400 text-black text-xs font-bold px-3 py-1 rounded-full animate-bounce">
-                    LEVEL UP!
+              {/* Score Card */}
+              <div className="bg-white rounded-3xl p-8 shadow-sm border border-slate-100 text-center mb-6 relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-emerald-400 to-teal-500"></div>
+                {isLevelUp ? (
+                  <div className="animate-in zoom-in duration-500">
+                    <div className="inline-block p-4 bg-yellow-100 rounded-full mb-4 shadow-inner">
+                      <ArrowUpCircle size={48} className="text-yellow-500 animate-bounce" />
+                    </div>
+                    <h2 className="text-2xl font-bold text-slate-800 mb-1">Level Up!</h2>
+                    <p className="text-slate-500 text-sm mb-4">恭喜晉升 LV.{currentLevel}</p>
+                  </div>
+                ) : (
+                  <div className="mb-4">
+                    <div className="inline-block p-4 bg-slate-100 rounded-full mb-4 shadow-inner">
+                      <Award size={48} className="text-slate-400" />
+                    </div>
+                    <h2 className="text-xl font-bold text-slate-800">挑戰完成</h2>
                   </div>
                 )}
-                <div className="relative inline-flex justify-center items-center w-48 h-48">
-                   {/* Decorative Circles */}
-                   <div className="absolute inset-0 border-[1rem] border-white/5 rounded-full"></div>
-                   <div className="absolute inset-0 border-[1rem] border-emerald-500 rounded-full transition-all duration-1000 ease-out" style={{ clipPath: `polygon(0 0, 100% 0, 100% ${score}%, 0 ${score}%)` }}></div> {/* Simple CSS hack, ideally use SVG */}
-                   
-                   <div className="flex flex-col items-center">
-                     <span className="text-7xl font-black font-serif tracking-tighter bg-gradient-to-br from-white to-stone-400 bg-clip-text text-transparent">
-                       {score}
-                     </span>
-                     <span className="text-stone-500 text-sm font-bold uppercase tracking-widest mt-1">Score</span>
-                   </div>
+                
+                <div className="flex justify-center items-baseline space-x-1">
+                  <span className="text-6xl font-black text-slate-900 tracking-tighter">{score}</span>
+                  <span className="text-xl font-bold text-slate-400">/ 100</span>
                 </div>
               </div>
 
-              {/* Summary Card */}
-              <div className="bg-white/10 p-6 rounded-3xl backdrop-blur-md mb-6 border border-white/5">
-                 <h4 className="text-stone-400 text-xs font-bold uppercase tracking-widest mb-3 flex items-center">
-                   <Brain size={14} className="mr-2" />
-                   AI Feedback
+              {/* AI Summary */}
+              <div className="mb-6 bg-white border border-slate-100 shadow-sm rounded-2xl p-5 text-center">
+                 <h4 className="font-bold text-slate-800 text-xs uppercase tracking-widest mb-3 flex items-center justify-center">
+                   <Brain className="w-4 h-4 mr-2 text-emerald-500"/> AI 營養師總評
                  </h4>
-                 <p className="text-stone-200 leading-relaxed font-medium">
-                   {getSummaryText()}
-                 </p>
+                 <p className="text-sm text-slate-600 leading-relaxed font-medium">{getSummaryText()}</p>
               </div>
 
-              {/* Action Buttons Fixed Bottom */}
-              <div className="fixed bottom-8 left-6 right-6 flex gap-4 max-w-md mx-auto">
-                 <button 
-                  onClick={handleStartQuiz} 
-                  className="flex-1 bg-white text-[#1C1917] py-4 rounded-2xl font-bold shadow-xl hover:bg-stone-200 transition-all flex items-center justify-center"
-                 >
-                  <RefreshCcw className="mr-2 w-5 h-5" />
-                  Retry
-                </button>
-                <button 
-                  onClick={() => setView('home')} 
-                  className="flex-1 bg-stone-800 text-stone-300 py-4 rounded-2xl font-bold hover:bg-stone-700 transition-all"
-                >
-                  Home
-                </button>
-              </div>
+              {/* Next Step */}
+              {weakestCategory && (
+                <div className="bg-white p-5 rounded-2xl border border-emerald-100 shadow-sm mb-6 flex items-start relative overflow-hidden">
+                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-emerald-400"></div>
+                  <Lightbulb className="text-emerald-500 w-5 h-5 mr-3.5 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <h4 className="font-bold text-slate-800 text-sm mb-1">下一步建議</h4>
+                    <p className="text-xs text-slate-500 leading-relaxed">
+                      系統發現你的最大弱點是 <span className="font-bold text-emerald-600">「{weakestCategory.name}」</span>。
+                      建議前往「知識圖書館」閱讀該章節，或再刷一次測驗！
+                    </p>
+                  </div>
+                </div>
+              )}
 
-              {/* Weakness Grid */}
-              <div className="pb-32">
-                <h3 className="font-bold text-stone-500 text-xs uppercase tracking-widest mb-4 px-1">
-                  Performance Breakdown
+              {/* Radar Grid */}
+              <div className="space-y-3 pb-24">
+                <h3 className="font-bold text-slate-900 text-lg mb-4 flex items-center px-1">
+                  <Activity size={20} className="mr-2 text-emerald-500" />
+                  能力透視
                 </h3>
-                <div className="grid gap-3">
-                  {weaknessAnalysis.map((stat, idx) => (
-                    <AnalysisCard key={idx} title={stat.name} score={stat.score} suggestion={stat.advice} icon={stat.icon} />
-                  ))}
+                {weaknessAnalysis.map((stat, idx) => (
+                  <AnalysisCard key={idx} title={stat.name} score={stat.score} suggestion={stat.advice} icon={stat.icon} />
+                ))}
+              </div>
+
+              {/* Bottom Fixed Action Bar */}
+              <div className="fixed bottom-0 left-0 right-0 p-4 bg-white/90 backdrop-blur border-t border-slate-100 z-40 max-w-md mx-auto">
+                <div className="flex space-x-3">
+                   <button 
+                    onClick={handleStartQuiz} 
+                    className="flex-1 bg-white text-slate-800 border-2 border-slate-200 py-3.5 rounded-xl font-bold shadow-sm hover:bg-slate-50 active:scale-95 transition-all flex items-center justify-center"
+                   >
+                    <RefreshCcw className="mr-2 w-4 h-4" />
+                    再試一次
+                  </button>
+                  <button 
+                    onClick={() => setView('home')} 
+                    className="flex-1 bg-slate-900 text-white py-3.5 rounded-xl font-bold shadow-lg shadow-slate-200 hover:bg-slate-800 active:scale-95 transition-all"
+                  >
+                    回到首頁
+                  </button>
                 </div>
               </div>
             </div>
