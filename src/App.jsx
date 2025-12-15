@@ -1,4 +1,3 @@
-import './App.css'
 import React, { useState, useEffect, useMemo } from 'react';
 import { 
   Brain, 
@@ -1144,14 +1143,15 @@ export default function App() {
               <Cloud size={14} className="text-emerald-300" />
             </div>
 
-            {/* Glossary Button visible everywhere except during quiz */}
+            {/* Prominent Glossary Button (Pill Shape) */}
             {view !== 'quiz' && (
               <button 
                 onClick={() => setView('glossary_hub')}
-                className="p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors flex items-center justify-center"
+                className="flex items-center px-3 py-1.5 bg-gradient-to-r from-emerald-600 to-teal-600 rounded-full shadow-lg hover:shadow-emerald-500/20 hover:scale-105 transition-all group"
                 title="名詞小字典"
               >
-                <Book size={18} className="text-emerald-300" />
+                <Book size={16} className="text-white mr-1.5" />
+                <span className="text-xs font-bold text-white group-hover:text-emerald-50">名詞字典</span>
               </button>
             )}
             
@@ -1248,6 +1248,23 @@ export default function App() {
                     </div>
                   </div>
                   <ChevronRight className="text-slate-300 group-hover:text-emerald-500 transition-colors" />
+                </button>
+
+                {/* Glossary Shortcut Card (New Entry Point) */}
+                <button 
+                  onClick={() => setView('glossary_hub')}
+                  className="w-full bg-gradient-to-r from-emerald-50 to-teal-50 text-slate-800 border-2 border-emerald-100 p-4 rounded-2xl font-bold text-base shadow-sm hover:shadow-md hover:border-emerald-300 transition-all active:scale-95 flex items-center justify-between group"
+                >
+                  <div className="flex items-center text-left">
+                    <div className="bg-white p-2.5 rounded-xl mr-4 shadow-sm border border-emerald-100">
+                      <Book className="text-emerald-600 w-5 h-5" />
+                    </div>
+                    <div>
+                      <div className="text-[10px] text-emerald-600 font-bold uppercase tracking-wider mb-0.5">Quick Lookup</div>
+                      <div>名詞小字典</div>
+                    </div>
+                  </div>
+                  <Search size={18} className="text-emerald-400 group-hover:text-emerald-600 transition-colors" />
                 </button>
               </div>
             </div>
