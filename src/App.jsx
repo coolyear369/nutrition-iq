@@ -1,21 +1,11 @@
 import './App.css'
 import React, { useState, useEffect, useMemo } from 'react';
 import { 
-  Dumbbell,
-  Sparkles,
-  Send,
-  User,
-  Bot,
-  LogOut,
-  Calendar,
-  Ruler,
-  Weight,
-  ArrowRight,
   Brain, 
   Target, 
   Award, 
   ChevronRight, 
-  ChevronLeft,
+  ChevronLeft, 
   CheckCircle2, 
   XCircle, 
   Activity, 
@@ -37,32 +27,27 @@ import {
   ShoppingBag, 
   Save, 
   Cloud, 
-  Trophy
+  Trophy, 
+  Dumbbell 
 } from 'lucide-react';
 
 // --- Firebase Imports ---
 import { initializeApp } from 'firebase/app';
-import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken, signOut, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from 'firebase/auth';
 import { getFirestore, doc, setDoc, getDoc, onSnapshot } from 'firebase/firestore';
 
 // --- Firebase Initialization ---
+const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
+const appId = typeof __app_id !== 'undefined' ? __app_id : 'nutrition-iq-default';
+
 let auth = null;
 let db = null;
 
-try {
-  const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
-  const appId = typeof __app_id !== 'undefined' ? __app_id : 'nutrition-iq-default';
-
-  if (firebaseConfig) {
-    const app = initializeApp(firebaseConfig);
-    auth = getAuth(app);
-    db = getFirestore(app);
-  }
-} catch (error) {
-  console.error("Firebase initialization failed:", error);
+if (firebaseConfig) {
+  const app = initializeApp(firebaseConfig);
+  auth = getAuth(app);
+  db = getFirestore(app);
 }
-
-const appId = typeof __app_id !== 'undefined' ? __app_id : 'nutrition-iq-default';
 
 // --- Configuration: Category Definitions ---
 const CATEGORY_CONFIG = {
@@ -233,7 +218,7 @@ const FITNESS_GUIDE_DATA = [
       { type: 'highlight', title: '3. 新手最常犯的錯誤', text: '○ 身體晃動：靠甩動身體把重量甩上去(那是練腰不是練肩)。\n○ 抬太高：抬超過肩膀高度會讓斜方肌(脖子旁)過度代償。' },
       { type: 'text', text: '4. 組數×次數×休息建議：\n○ 想變更壯(肌肥大)：3組 × 12-15次(休息60秒)。\n○ 想變更強(最大力量)：不建議以此動作練低次數力量，容易受傷。\n○ 想練線條(肌耐力)：3組 × 20次(休息30秒)。\n\n5. 建議一週頻率：每週2-3次(中束恢復快，可多練)。\n\n6. 可替代動作：滑輪側平舉(Cable Lateral Raise)。\n\n7. 具體影響：刻畫肩膀外側線條，讓你的「肩膀變寬」，穿T恤不再撐不起來。' },
       { type: 'section', title: '3. 體態救星：機械反向飛鳥 (Machine Reverse Fly)' },
-      { type: 'text', text: '針對新手最容易忽略的「後束」，這對於長期讀書導致圓肩的學生來說是「神級動作。\n\n1. 主要訓練肌群：三角肌後束、上背部肌群。' },
+      { type: 'text', text: '針對新手最容易忽略的「後束」，這對於長期讀書導致圓肩的學生來說是「神級動作」。\n\n1. 主要訓練肌群：三角肌後束、上背部肌群。' },
       { type: 'highlight', title: '2. 動作執行重點', text: '○ 姿勢：反向坐在機械上(胸口貼墊子)，雙手平握握把。\n○ 發力：保持手肘微彎，用肩膀後方的力量將手臂往兩側撥開。\n○ 感受：感覺兩片肩胛骨在「後撥」，而不是在「夾」。' },
       { type: 'highlight', title: '3. 新手最常犯的錯誤', text: '○ 聳肩：肩膀拱起，壓力全部跑到斜方肌。\n○ 握太緊：過度依賴小臂發力，導致後肩沒感覺。' },
       { type: 'text', text: '4. 組數×次數×休息建議：\n○ 想變更壯(肌肥大)：3組 × 12-15次(休息60秒)。\n○ 想變更強(最大力量)：不建議此動作衝大重量。\n○ 想練線條(肌耐力)：3組 × 20次(休息30秒)。\n\n5. 建議一週頻率：每週2次。\n\n6. 可替代動作：繩索面拉(Face Pull)、啞鈴俯身飛鳥。\n\n7. 具體影響：消除「含胸駝背」，讓肩膀從側面看更飽滿，呈現3D立體視覺。' },
@@ -1186,6 +1171,71 @@ const QUESTION_BANK = [
   },
 
   // ==========================================
+  // Level 2: True/False (是非題 - 份量估算)
+  // ==========================================
+
+  {
+    id: 'l2-b01', level: 2, category: 'Quantification', type: 'boolean',
+    question: 'Q. (是非題) 水果很健康，所以減肥期間可以無限量吃到飽，不用計算份量？',
+    options: ['正確', '錯誤'], correct: 1, 
+    explanation: '錯誤。水果含果糖，熱量不低。一般建議每餐一份（拳頭大），過量一樣會胖。'
+  },
+  {
+    id: 'l2-b02', level: 2, category: 'Quantification', type: 'boolean',
+    question: 'Q. (是非題) 100g 的洋芋片和 100g 的花椰菜，熱量是一樣的？',
+    options: ['正確', '錯誤'], correct: 1, 
+    explanation: '錯誤。洋芋片是高熱量密度食物（約540卡），花椰菜是低密度（約25卡），差了20倍。'
+  },
+  {
+    id: 'l2-b03', level: 2, category: 'Quantification', type: 'boolean',
+    question: 'Q. (是非題) 喝湯時，清湯通常比濃湯（勾芡、加奶油）熱量低很多？',
+    options: ['正確', '錯誤'], correct: 0, 
+    explanation: '正確。濃湯常加入澱粉勾芡或鮮奶油，熱量遠高於清湯。'
+  },
+  {
+    id: 'l2-b04', level: 2, category: 'Quantification', type: 'boolean',
+    question: 'Q. (是非題) 一個拳頭大的饅頭，熱量跟一個拳頭大的地瓜差不多？',
+    options: ['正確', '錯誤'], correct: 1, 
+    explanation: '錯誤。饅頭紮實且精緻，熱量密度高（約280卡）；地瓜水分多纖維多（約140卡），饅頭熱量約是地瓜兩倍。'
+  },
+  {
+    id: 'l2-b05', level: 2, category: 'Quantification', type: 'boolean',
+    question: 'Q. (是非題) 酒精的熱量很高，1g 酒精約有 7 大卡，接近脂肪的熱量？',
+    options: ['正確', '錯誤'], correct: 0, 
+    explanation: '正確。酒精熱量僅次於脂肪(9kcal)，且代謝時會優先堆積脂肪，是液體熱量炸彈。'
+  },
+  {
+    id: 'l2-b06', level: 2, category: 'Quantification', type: 'boolean',
+    question: 'Q. (是非題) 為了精準控制飲食，每一餐都一定要用電子秤秤重才行？',
+    options: ['正確', '錯誤'], correct: 1, 
+    explanation: '錯誤。長期來說「手掌法則」更實用且容易執行，能幫助養成直覺，減少心理壓力。'
+  },
+  {
+    id: 'l2-b07', level: 2, category: 'Quantification', type: 'boolean',
+    question: 'Q. (是非題) 蔬菜（如葉菜類）熱量極低，基本上可以視為「吃到飽」不限量？',
+    options: ['正確', '錯誤'], correct: 0, 
+    explanation: '正確。葉菜類體積大熱量低，多吃能增加飽足感，只要注意烹調不要加太多油即可。'
+  },
+  {
+    id: 'l2-b08', level: 2, category: 'Quantification', type: 'boolean',
+    question: 'Q. (是非題) 兩顆核桃就大約等於一茶匙的油（一份油脂）？',
+    options: ['正確', '錯誤'], correct: 0, 
+    explanation: '正確。堅果種子類是油脂來源，份量稍微抓一點點就足夠了。'
+  },
+  {
+    id: 'l2-b09', level: 2, category: 'Quantification', type: 'boolean',
+    question: 'Q. (是非題) 如果今天喝了一杯含糖飲料，它的熱量可能相當於多吃了一碗飯？',
+    options: ['正確', '錯誤'], correct: 0, 
+    explanation: '正確。一杯全糖珍奶熱量可達 700 卡，超過兩碗白飯的熱量。'
+  },
+  {
+    id: 'l2-b10', level: 2, category: 'Quantification', type: 'boolean',
+    question: 'Q. (是非題) 雞胸肉是低脂肉，所以不管用炸的還是煎的，熱量都一樣低？',
+    options: ['正確', '錯誤'], correct: 1, 
+    explanation: '錯誤。裹粉油炸會讓表皮吸附大量油脂，熱量可能比水煮高出一倍以上。'
+  },
+
+  // ==========================================
   // Level 3: Choice (選擇題 - 外食實戰)
   // ==========================================
   {
@@ -1335,396 +1385,23 @@ const AnalysisCard = ({ title, score, suggestion, icon: Icon }) => (
   </div>
 );
 
-// --- New Component: Login View ---
-const LoginView = ({ onLoginSuccess }) => {
-  const [isLoggingIn, setIsLoggingIn] = useState(false);
-
-  const handleGoogleLogin = async () => {
-    setIsLoggingIn(true);
-    try {
-      if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-         await signInWithCustomToken(auth, __initial_auth_token);
-      } else {
-         await signInAnonymously(auth);
-      }
-    } catch (error) {
-      console.error("Login failed", error);
-      alert("登入失敗，請稍後再試。");
-      setIsLoggingIn(false);
-    }
-  };
-
-  return (
-    <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-6">
-      <div className="bg-white p-8 rounded-3xl shadow-xl w-full max-w-sm text-center border border-slate-100">
-        <div className="bg-emerald-100 p-4 rounded-full inline-flex mb-6">
-          <Brain size={48} className="text-emerald-600" />
-        </div>
-        <h1 className="text-3xl font-extrabold text-slate-900 mb-2">Nutrition IQ</h1>
-        <p className="text-slate-500 mb-8 font-medium">打造你的專屬健身與營養大腦</p>
-
-        <button
-          onClick={handleGoogleLogin}
-          disabled={isLoggingIn}
-          className="w-full bg-white border-2 border-slate-200 text-slate-700 font-bold py-3.5 rounded-xl hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center justify-center space-x-3 active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
-        >
-          {isLoggingIn ? (
-            <RefreshCcw className="animate-spin w-5 h-5 text-slate-400" />
-          ) : (
-            <svg className="w-5 h-5" viewBox="0 0 24 24">
-              <path
-                fill="#4285F4"
-                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-              />
-              <path
-                fill="#34A853"
-                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-              />
-              <path
-                fill="#FBBC05"
-                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.26.81-.58z"
-              />
-              <path
-                fill="#EA4335"
-                d="M12 4.66c1.61 0 3.06.56 4.21 1.64l3.15-3.15C17.45 1.14 14.97 0 12 0 7.7 0 3.99 2.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-              />
-            </svg>
-          )}
-          <span>使用 Google 帳號登入</span>
-        </button>
-        
-        <p className="text-xs text-slate-400 mt-6 leading-relaxed">
-          登入即代表您同意我們的服務條款與隱私政策。<br/>我們將根據您的資料提供個人化建議。
-        </p>
-      </div>
-    </div>
-  );
-};
-
-// --- New Component: Profile Setup View ---
-const ProfileSetupView = ({ user, onComplete }) => {
-  const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState({
-    displayName: user.displayName || '',
-    birthDate: '',
-    height: '',
-    weight: ''
-  });
-  const [isSaving, setIsSaving] = useState(false);
-
-  const calculateAge = (birthDateString) => {
-    const today = new Date();
-    const birthDate = new Date(birthDateString);
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const m = today.getMonth() - birthDate.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-      age--;
-    }
-    return age;
-  };
-
-  const handleNext = async () => {
-    if (step < 3) {
-      setStep(step + 1);
-    } else {
-      // Save data
-      setIsSaving(true);
-      const age = calculateAge(formData.birthDate);
-      
-      try {
-        const userDocRef = doc(db, 'artifacts', appId, 'users', user.uid, 'profile', 'info');
-        await setDoc(userDocRef, {
-          ...formData,
-          age,
-          isProfileComplete: true,
-          updatedAt: new Date().toISOString()
-        }, { merge: true });
-        
-        onComplete();
-      } catch (error) {
-        console.error("Error saving profile:", error);
-        alert("儲存失敗，請重試");
-      } finally {
-        setIsSaving(false);
-      }
-    }
-  };
-
-  const isStepValid = () => {
-    if (step === 1) return formData.displayName.trim().length > 0;
-    if (step === 2) return formData.birthDate !== '';
-    if (step === 3) return formData.height > 0 && formData.weight > 0;
-    return false;
-  };
-
-  return (
-    <div className="min-h-screen bg-white flex flex-col p-6">
-      <div className="flex-1 max-w-sm mx-auto w-full flex flex-col justify-center">
-        {/* Progress Bar */}
-        <div className="w-full bg-slate-100 h-1.5 rounded-full mb-10">
-          <div 
-            className="bg-emerald-500 h-1.5 rounded-full transition-all duration-500" 
-            style={{ width: `${(step / 3) * 100}%` }}
-          />
-        </div>
-
-        {/* Step 1: Name */}
-        {step === 1 && (
-          <div className="animate-in slide-in-from-right fade-in duration-300">
-            <h2 className="text-2xl font-bold text-slate-900 mb-2">怎麼稱呼你？</h2>
-            <p className="text-slate-500 mb-8">給自己取個響亮的代號吧！</p>
-            <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 flex items-center">
-              <User className="text-slate-400 w-5 h-5 mr-3" />
-              <input
-                type="text"
-                value={formData.displayName}
-                onChange={(e) => setFormData({...formData, displayName: e.target.value})}
-                placeholder="輸入暱稱"
-                className="bg-transparent w-full outline-none text-slate-800 font-bold placeholder:font-normal"
-                autoFocus
-              />
-            </div>
-          </div>
-        )}
-
-        {/* Step 2: Birthday */}
-        {step === 2 && (
-          <div className="animate-in slide-in-from-right fade-in duration-300">
-            <h2 className="text-2xl font-bold text-slate-900 mb-2">你的生日是？</h2>
-            <p className="text-slate-500 mb-8">我們會幫你計算年齡與代謝率。</p>
-            <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 flex items-center">
-              <Calendar className="text-slate-400 w-5 h-5 mr-3" />
-              <input
-                type="date"
-                value={formData.birthDate}
-                onChange={(e) => setFormData({...formData, birthDate: e.target.value})}
-                className="bg-transparent w-full outline-none text-slate-800 font-bold"
-              />
-            </div>
-          </div>
-        )}
-
-        {/* Step 3: Height & Weight */}
-        {step === 3 && (
-          <div className="animate-in slide-in-from-right fade-in duration-300">
-            <h2 className="text-2xl font-bold text-slate-900 mb-2">身體數值</h2>
-            <p className="text-slate-500 mb-8">這能幫助 AI 更精準估算你的 TDEE。</p>
-            
-            <div className="space-y-4">
-              <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 flex items-center">
-                <Ruler className="text-slate-400 w-5 h-5 mr-3" />
-                <input
-                  type="number"
-                  value={formData.height}
-                  onChange={(e) => setFormData({...formData, height: e.target.value})}
-                  placeholder="身高 (cm)"
-                  className="bg-transparent w-full outline-none text-slate-800 font-bold placeholder:font-normal"
-                />
-                <span className="text-slate-400 text-sm font-bold">cm</span>
-              </div>
-
-              <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 flex items-center">
-                <Weight className="text-slate-400 w-5 h-5 mr-3" />
-                <input
-                  type="number"
-                  value={formData.weight}
-                  onChange={(e) => setFormData({...formData, weight: e.target.value})}
-                  placeholder="體重 (kg)"
-                  className="bg-transparent w-full outline-none text-slate-800 font-bold placeholder:font-normal"
-                />
-                <span className="text-slate-400 text-sm font-bold">kg</span>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-
-      <div className="mt-auto pt-6">
-        <button
-          onClick={handleNext}
-          disabled={!isStepValid() || isSaving}
-          className="w-full bg-slate-900 text-white py-4 rounded-xl font-bold hover:bg-slate-800 transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
-        >
-          {isSaving ? (
-            <RefreshCcw className="animate-spin w-5 h-5" />
-          ) : (
-            <>
-              <span>{step === 3 ? '完成設定' : '下一步'}</span>
-              {step < 3 && <ArrowRight className="w-5 h-5 ml-2" />}
-            </>
-          )}
-        </button>
-        {step > 1 && !isSaving && (
-          <button 
-            onClick={() => setStep(step - 1)}
-            className="w-full text-slate-400 py-3 mt-2 text-sm font-bold hover:text-slate-600"
-          >
-            回上一步
-          </button>
-        )}
-      </div>
-    </div>
-  );
-};
-
-// --- New Component: AI Consultant View ---
-const AIConsultantView = ({ onBack }) => {
-  const [input, setInput] = useState('');
-  const [messages, setMessages] = useState([
-    { 
-      role: 'assistant', 
-      content: '你好！我是你的專屬 AI 營養與健身顧問。我可以幫你：\n\n1. ✨ 估算食物熱量與營養\n2. 🥗 根據食材生成減脂食譜\n3. 🏋️‍♂️ 解答健身動作與菜單問題\n4. 💡 提供外食補救建議\n\n請問今天想問什麼呢？' 
-    }
-  ]);
-  const [isLoading, setIsLoading] = useState(false);
-  const apiKey = ""; // API Key injection handled by environment
-
-  const handleSend = async () => {
-    if (!input.trim()) return;
-
-    const userMessage = { role: 'user', content: input };
-    setMessages(prev => [...prev, userMessage]);
-    setInput('');
-    setIsLoading(true);
-
-    try {
-      // Construct the prompt with context
-      const systemPrompt = `你是一位專業的營養師與健身教練，你的名字是「Nutrition IQ AI」。
-      你的目標是幫助使用者達成增肌、減脂或維持健康的目標。
-      
-      請遵循以下原則回答：
-      1. 語氣親切、鼓勵性強，但也必須科學嚴謹。
-      2. 針對營養問題，請參考「低熱量密度」、「原型食物」、「手掌法則」等觀念。
-      3. 針對健身問題，請強調「動作標準」、「漸進式超負荷」、「RPE」等觀念。
-      4. 如果使用者問到醫療相關問題（如受傷診斷），請強烈建議就醫。
-      5. 回答請條理分明，適當使用 emoji。
-      6. 使用繁體中文回答。
-      `;
-
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          contents: [
-            { role: 'user', parts: [{ text: systemPrompt + "\n\n使用者問題：" + input }] }
-          ]
-        })
-      });
-
-      const data = await response.json();
-      const aiResponseText = data.candidates?.[0]?.content?.parts?.[0]?.text || "抱歉，我現在有點累，請稍後再試。";
-
-      setMessages(prev => [...prev, { role: 'assistant', content: aiResponseText }]);
-    } catch (error) {
-      console.error("AI Error:", error);
-      setMessages(prev => [...prev, { role: 'assistant', content: "連線發生錯誤，請檢查網路或是稍後再試。" }]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSend();
-    }
-  };
-
-  return (
-    <div className="flex flex-col h-full bg-slate-50">
-      <div className="sticky top-0 bg-white/90 backdrop-blur-md z-10 border-b border-slate-100 px-6 py-4 flex items-center shadow-sm">
-        <button 
-          onClick={onBack} 
-          className="mr-4 p-2 bg-slate-50 border border-slate-200 rounded-full hover:bg-slate-100 text-slate-600 transition-all"
-        >
-          <ChevronLeft size={20} />
-        </button>
-        <div className="flex-1 min-w-0 flex items-center">
-            <div className="bg-gradient-to-tr from-indigo-500 to-purple-500 p-1.5 rounded-lg mr-2.5">
-              <Sparkles size={16} className="text-white" />
-            </div>
-            <div>
-              <div className="text-[10px] text-indigo-500 font-bold uppercase tracking-wider mb-0.5">GEMINI POWERED</div>
-              <h2 className="text-base font-bold text-slate-800 truncate">AI 營養顧問</h2>
-            </div>
-        </div>
-      </div>
-
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {messages.map((msg, idx) => (
-          <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-            <div className={`flex max-w-[85%] ${msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-1 ${msg.role === 'user' ? 'bg-slate-200 ml-2' : 'bg-indigo-100 mr-2'}`}>
-                {msg.role === 'user' ? <User size={16} className="text-slate-600" /> : <Bot size={16} className="text-indigo-600" />}
-              </div>
-              <div className={`p-4 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap ${
-                msg.role === 'user' 
-                  ? 'bg-slate-800 text-white rounded-tr-none shadow-md' 
-                  : 'bg-white text-slate-700 border border-slate-100 rounded-tl-none shadow-sm'
-              }`}>
-                {msg.content}
-              </div>
-            </div>
-          </div>
-        ))}
-        {isLoading && (
-          <div className="flex justify-start">
-             <div className="flex max-w-[85%] flex-row">
-              <div className="w-8 h-8 rounded-full bg-indigo-100 mr-2 flex items-center justify-center flex-shrink-0 mt-1">
-                <Bot size={16} className="text-indigo-600" />
-              </div>
-              <div className="bg-white p-4 rounded-2xl rounded-tl-none border border-slate-100 shadow-sm flex items-center space-x-2">
-                <div className="w-2 h-2 bg-indigo-400 rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
-                <div className="w-2 h-2 bg-indigo-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                <div className="w-2 h-2 bg-indigo-400 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-
-      <div className="p-4 bg-white border-t border-slate-100">
-        <div className="relative">
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyPress={handleKeyPress}
-            placeholder="輸入你的問題... (如：我有乳糖不耐症怎麼補蛋白？)"
-            className="w-full pl-4 pr-12 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all text-sm"
-            disabled={isLoading}
-          />
-          <button
-            onClick={handleSend}
-            disabled={!input.trim() || isLoading}
-            className="absolute right-2 top-2 p-1.5 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-          >
-            <Send size={18} />
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// ... existing Main App Component ...
+// --- Main App Component ---
 
 export default function App() {
-  const [view, setView] = useState('loading'); // Changed initial state to 'loading'
-  const [currentLevel, setCurrentLevel] = useState(1);
-  const [selectedLevel, setSelectedLevel] = useState(1);
-  const [quizLevel, setQuizLevel] = useState(1);
-  const [activeQuestions, setActiveQuestions] = useState([]);
+  const [view, setView] = useState('home'); 
+  const [currentLevel, setCurrentLevel] = useState(1); // User's highest unlocked level
+  const [selectedLevel, setSelectedLevel] = useState(1); // User's chosen level to play
+  const [quizLevel, setQuizLevel] = useState(1); // Actual level being played (after checks)
+   
+  const [activeQuestions, setActiveQuestions] = useState([]); 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [showExplanation, setShowExplanation] = useState(false);
   const [isCorrect, setIsCorrect] = useState(null);
-  const [answers, setAnswers] = useState([]);
+  const [answers, setAnswers] = useState([]); 
   const [selectedOption, setSelectedOption] = useState(null);
   const [isLevelUp, setIsLevelUp] = useState(false);
-  
+   
   // Learning Mode State
   const [activeChapter, setActiveChapter] = useState(null);
 
@@ -1739,34 +1416,26 @@ export default function App() {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [userStats, setUserStats] = useState({ totalPlayed: 0, highestScore: 0 });
-  const [userProfile, setUserProfile] = useState(null); // Store extended user profile
 
   // --- Auth & Persistence Effects ---
   useEffect(() => {
     if (!auth) {
       setIsLoading(false);
-      setView('home'); // If no auth available, skip to home
       return;
     }
 
-    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      setUser(currentUser);
-      
-      if (currentUser) {
-        // Check if profile exists
-        const profileRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'profile', 'info');
-        const profileSnap = await getDoc(profileRef);
-        
-        if (profileSnap.exists() && profileSnap.data().isProfileComplete) {
-          setUserProfile(profileSnap.data());
-          setView('home');
-        } else {
-          setView('setup_profile');
-        }
+    const initAuth = async () => {
+      if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+        await signInWithCustomToken(auth, __initial_auth_token);
       } else {
-        setView('login');
+        await signInAnonymously(auth);
       }
-      setIsLoading(false);
+    };
+    initAuth();
+
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      if (!currentUser) setIsLoading(false);
     });
     return () => unsubscribe();
   }, []);
@@ -1785,8 +1454,10 @@ export default function App() {
           highestScore: data.highestScore || 0
         });
       }
+      setIsLoading(false);
     }, (error) => {
       console.error("Error fetching user data:", error);
+      setIsLoading(false);
     });
 
     return () => unsubscribe();
@@ -1961,43 +1632,14 @@ export default function App() {
     setView('guide_chapter');
   };
 
-  const handleLogout = async () => {
-    await signOut(auth);
-    setView('login');
-    setUserProfile(null);
-    setScore(0);
-    setCurrentLevel(1);
-  };
-
   if (isLoading) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="flex flex-col items-center">
           <RefreshCcw className="w-8 h-8 text-emerald-500 animate-spin mb-4" />
-          <p className="text-slate-500 font-bold">載入中...</p>
+          <p className="text-slate-500 font-bold">載入雲端紀錄中...</p>
         </div>
       </div>
-    );
-  }
-
-  if (view === 'login') {
-    return <LoginView />;
-  }
-
-  if (view === 'setup_profile' && user) {
-    return (
-      <ProfileSetupView 
-        user={user} 
-        onComplete={async () => {
-           // Fetch profile again to update state
-           const profileRef = doc(db, 'artifacts', appId, 'users', user.uid, 'profile', 'info');
-           const profileSnap = await getDoc(profileRef);
-           if (profileSnap.exists()) {
-             setUserProfile(profileSnap.data());
-           }
-           setView('home');
-        }} 
-      />
     );
   }
 
@@ -2006,46 +1648,37 @@ export default function App() {
       <div className="w-full max-w-md bg-white min-h-screen flex flex-col shadow-2xl relative border-x border-slate-50">
         
         {/* Header - Unified App Style */}
-        {view !== 'ai_consultant' && (
-          <header className="bg-white/90 backdrop-blur-md text-slate-800 px-5 py-4 flex justify-between items-center sticky top-0 z-30 border-b border-slate-100 h-16">
-            <div className="flex items-center space-x-2.5">
-              <div className="bg-emerald-500 p-1.5 rounded-lg shadow-sm shadow-emerald-200">
-                <Brain size={20} className="text-white" />
-              </div>
-              <div>
-                <h1 className="font-bold text-lg tracking-tight text-slate-900 leading-none">Nutrition IQ</h1>
-                {userProfile && <p className="text-[10px] text-slate-400 font-medium">Hi, {userProfile.displayName}</p>}
-              </div>
+        <header className="bg-white/90 backdrop-blur-md text-slate-800 px-5 py-4 flex justify-between items-center sticky top-0 z-30 border-b border-slate-100 h-16">
+          <div className="flex items-center space-x-2.5">
+            <div className="bg-emerald-500 p-1.5 rounded-lg shadow-sm shadow-emerald-200">
+              <Brain size={20} className="text-white" />
             </div>
-            <div className="flex items-center space-x-2">
-              
-              {/* Glossary Button visible everywhere except during quiz */}
-              {view !== 'quiz' && (
-                <button 
-                  onClick={() => setView('glossary_hub')}
-                  className="p-2 text-slate-400 hover:text-emerald-600 transition-colors"
-                  title="名詞小字典"
-                >
-                  <Book size={20} />
-                </button>
-              )}
-
-              {/* Logout Button */}
-              {view !== 'quiz' && (
-                <button 
-                  onClick={handleLogout}
-                  className="p-2 text-slate-400 hover:text-red-500 transition-colors"
-                  title="登出"
-                >
-                  <LogOut size={20} />
-                </button>
-              )}
-              
-              {/* Level Badge Logic - Removed from here to clean up header, or keep as icon only */}
-              {/* (Optional: Move Level Badge to Home view main content if header is crowded) */}
-            </div>
-          </header>
-        )}
+            <h1 className="font-bold text-lg tracking-tight text-slate-900">Nutrition IQ</h1>
+          </div>
+          <div className="flex items-center space-x-3">
+            
+            {/* Glossary Button visible everywhere except during quiz */}
+            {view !== 'quiz' && (
+              <button 
+                onClick={() => setView('glossary_hub')}
+                className="flex items-center px-3 py-1.5 bg-gradient-to-r from-emerald-600 to-teal-600 rounded-full shadow-lg shadow-emerald-200 hover:scale-105 active:scale-95 transition-all group"
+                title="名詞小字典"
+              >
+                <Book size={14} className="text-white mr-1.5" />
+                <span className="text-xs font-bold text-white group-hover:text-emerald-50">名詞字典</span>
+              </button>
+            )}
+            
+            {/* Level Badge Logic */}
+            {view === 'quiz' ? (
+               <LevelBadge level={quizLevel} animate={false} />
+            ) : (
+               view !== 'learning_hub' && view !== 'learning_detail' && view !== 'glossary_hub' && view !== 'glossary_detail' && view !== 'guide_hub' && view !== 'guide_chapter' && (
+                 <LevelBadge level={currentLevel} animate={view === 'analysis' && isLevelUp} />
+               )
+            )}
+          </div>
+        </header>
 
         {/* Content Area */}
         <main className="flex-1 overflow-y-auto bg-slate-50/50">
@@ -2055,12 +1688,6 @@ export default function App() {
             <div className="p-6 flex flex-col min-h-full">
               {/* Hero Section */}
               <div className="mt-4 mb-8 text-center">
-                {/* Add User Level Display Here */}
-                <div className="inline-flex items-center space-x-1.5 bg-white border border-slate-200 text-slate-800 px-3 py-1 rounded-full text-xs font-bold shadow-sm mb-4">
-                  <Award className="w-3.5 h-3.5 text-yellow-500" />
-                  <span>目前等級: LV.{currentLevel}</span>
-                </div>
-
                 <h2 className="text-3xl font-extrabold text-slate-900 mb-3 tracking-tight leading-tight">
                   飲食不是靠感覺<br/><span className="text-emerald-600">是靠「能力」</span>
                 </h2>
@@ -2106,29 +1733,7 @@ export default function App() {
               </div>
 
               <div className="space-y-4 pb-8">
-                {/* NEW: AI Consultant Button */}
-                <button 
-                  onClick={() => setView('ai_consultant')}
-                  className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-1 rounded-2xl shadow-lg shadow-indigo-200 hover:shadow-xl transition-all active:scale-95 group relative overflow-hidden"
-                >
-                  <div className="bg-white/10 backdrop-blur-sm p-4 rounded-xl flex items-center justify-between h-full w-full">
-                    <div className="flex items-center text-left">
-                       <div className="bg-white/20 p-3 rounded-lg mr-4 border border-white/20">
-                         <Sparkles className="text-yellow-300 w-6 h-6" />
-                       </div>
-                       <div>
-                         <div className="text-[10px] text-indigo-100 font-bold uppercase tracking-wider mb-0.5">
-                           New Feature
-                         </div>
-                         <div className="text-lg font-bold">AI 營養/健身顧問</div>
-                         <div className="text-xs text-indigo-100 mt-1 font-medium">有問題？隨時問我！✨</div>
-                       </div>
-                    </div>
-                    <ChevronRight className="text-indigo-200 group-hover:text-white transition-colors" />
-                  </div>
-                </button>
-
-                {/* Fitness Guide Entry Card */}
+                {/* NEW: Fitness Guide Entry Card */}
                 <div className="mb-2">
                    <div className="flex items-center justify-between mb-2 px-1">
                       <h3 className="font-bold text-slate-800 flex items-center text-xs uppercase tracking-wider">
@@ -2195,11 +1800,6 @@ export default function App() {
                 </button>
               </div>
             </div>
-          )}
-
-          {/* VIEW: AI CONSULTANT */}
-          {view === 'ai_consultant' && (
-            <AIConsultantView onBack={() => setView('home')} />
           )}
 
           {/* VIEW: LEARNING HUB (Chapter List) */}
